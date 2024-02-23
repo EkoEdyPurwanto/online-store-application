@@ -25,3 +25,6 @@ go.work
 
 # logging
 logger.log
+
+# env
+app.env
