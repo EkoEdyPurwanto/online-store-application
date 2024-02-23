@@ -3,11 +3,11 @@ package req
 import "online-store-application/model"
 
 type RegisterRequest struct {
-	Role            model.Role
-	Identifier      registerIdentifier
-	UserName        string `json:"userName" validate:"required,min=3,max=30"`
-	Password        string `json:"password" validate:"required"`
-	PasswordConfirm string `json:"passwordConfirm" validate:"required,eqfield=Password"`
+	Role            model.Role         `json:"role"`
+	Identifier      registerIdentifier `json:"identifier"`
+	UserName        string             `json:"username" validate:"required,min=3,max=30"`
+	Password        string             `json:"password" validate:"required"`
+	PasswordConfirm string             `json:"passwordConfirm" validate:"required,eqfield=Password"`
 }
 
 type registerIdentifier struct {

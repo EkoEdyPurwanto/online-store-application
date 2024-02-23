@@ -11,10 +11,10 @@ type (
 )
 
 const (
-	Active   UsersStatus = "aktif"
-	Inactive UsersStatus = "nonaktif"
-	Blocked  UsersStatus = "diblokir"
-	Other    UsersStatus = "Other"
+	Active   UsersStatus = "active"
+	Inactive UsersStatus = "inactive"
+	Blocked  UsersStatus = "blocked"
+	Other    UsersStatus = "other"
 	Admin    Role        = "admin"
 	Merchant Role        = "merchant"
 	Customer Role        = "customer"

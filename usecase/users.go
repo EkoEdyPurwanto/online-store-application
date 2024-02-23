@@ -17,7 +17,7 @@ type (
 	}
 
 	usersUseCase struct {
-		repo repository.UsersRepository
+		repo      repository.UsersRepository
 		walletsUC WalletsUseCase
 	}
 )
@@ -44,7 +44,6 @@ func (u *usersUseCase) Register(payload req.RegisterRequest) error {
 		UserStatus:  model.Active,
 		Role:        payload.Role,
 		CreatedAt:   time.Now(),
-		UpdatedAt:   time.Time{},
 	}
 
 	err = u.repo.Save(users)
@@ -58,7 +57,6 @@ func (u *usersUseCase) Register(payload req.RegisterRequest) error {
 		RekeningUser: common.GenerateRandomRekeningNumber(10),
 		Balance:      0,
 		CreatedAt:    time.Now(),
-		UpdatedAt:    time.Time{},
 	}
 
 	err = u.walletsUC.CreateWallet(wallets)
@@ -72,7 +70,7 @@ func (u *usersUseCase) Register(payload req.RegisterRequest) error {
 // Constructor
 func NewUsersUseCase(repo repository.UsersRepository, walletsUC WalletsUseCase) UsersUseCase {
 	return &usersUseCase{
-		repo: repo,
+		repo:      repo,
 		walletsUC: walletsUC,
 	}
 }
