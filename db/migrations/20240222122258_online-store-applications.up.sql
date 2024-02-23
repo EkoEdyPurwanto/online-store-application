@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users
     password      VARCHAR(100),
     email         VARCHAR(50) UNIQUE,
     phone_number  VARCHAR(15) UNIQUE,
-    users_status  users_account_enum NOT NULL DEFAULT 'active',
+    user_status   users_account_enum NOT NULL DEFAULT 'active',
     role          users_role_enum NOT NULL,
     created_at    TIMESTAMPTZ DEFAULT NOW(),
     updated_at    TIMESTAMPTZ
