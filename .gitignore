@@ -22,3 +22,6 @@ go.work
 
 # text editor or ide
 .idea
+
+# logging
+logger.log
