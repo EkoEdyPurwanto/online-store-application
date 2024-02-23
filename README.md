@@ -1,2 +1,3 @@
-# online-store-application
-this is online store RESTful API
+| Projects Name             | Projects Description                                                                                                                                                                                                                                        | Built with                         |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
+| online store applications | The online store application is a RESTful API designed to facilitate online shopping for users customers. It provides a seamless shopping experience by allowing users to browse through various products, add them to their cart, and proceed to checkout. | Go-Lang, PostgreSQL, auto migrate, |
