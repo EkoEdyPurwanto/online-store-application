@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "online-store-application/delivery"
 
+func main() {
+	delivery.NewServer().Run()
 }

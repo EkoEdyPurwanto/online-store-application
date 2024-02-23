@@ -25,8 +25,7 @@ func NewRepoManager(infraManager InfraManager) RepositoryManager {
 
 // implement interface here
 func (r *repositoryManager) UsersRepository() repository.UsersRepository {
-	//TODO implement me
-	panic("implement me")
+	return repository.NewUsersRepository(r.infraManager.Conn())
 }
 
 func (r *repositoryManager) WalletsRepository() repository.WalletsRepository {
@@ -34,21 +33,17 @@ func (r *repositoryManager) WalletsRepository() repository.WalletsRepository {
 }
 
 func (r *repositoryManager) ProductsRepository() repository.ProductsRepository {
-	//TODO implement me
-	panic("implement me")
+	return repository.NewProductsRepository(r.infraManager.Conn())
 }
 
 func (r *repositoryManager) CategoriesRepository() repository.CategoriesRepository {
-	//TODO implement me
-	panic("implement me")
+	return repository.NewCategoriesRepository(r.infraManager.Conn())
 }
 
 func (r *repositoryManager) CartsRepository() repository.CartsRepository {
-	//TODO implement me
-	panic("implement me")
+	return repository.NewCartsRepository(r.infraManager.Conn())
 }
 
 func (r *repositoryManager) TransactionsRepository() repository.TransactionsRepository {
-	//TODO implement me
-	panic("implement me")
+	return repository.NewTransactionsRepository(r.infraManager.Conn())
 }

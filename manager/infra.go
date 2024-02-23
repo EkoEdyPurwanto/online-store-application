@@ -3,6 +3,7 @@ package manager
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
 	"online-store-application/config"
 )
@@ -49,4 +50,3 @@ func (i *infraManager) initDb() error {
 	i.db = db
 	return nil
 }
-

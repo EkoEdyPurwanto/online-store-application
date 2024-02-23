@@ -6,6 +6,8 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"online-store-application/config"
+	"online-store-application/delivery/controller"
+	"online-store-application/delivery/middleware"
 	"online-store-application/manager"
 )
 
@@ -26,11 +28,11 @@ func (s *Server) Run() {
 }
 
 func (s *Server) initMiddlewares() {
-
+	s.engine.Use(middleware.LogRequest(s.log))
 }
 
 func (s *Server) initControllers() {
-
+	controller.NewUsersController(s.ucManager.UsersUC(), s.ucManager.WalletsUC(), s.engine).AuthRoute()
 }
 
 func NewServer() *Server {
