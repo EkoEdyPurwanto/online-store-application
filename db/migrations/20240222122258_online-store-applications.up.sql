@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS carts
     updated_at    TIMESTAMPTZ
 );
 
-CREATE TABLE IF NOT EXISTS transaction
+CREATE TABLE IF NOT EXISTS transactions
 (
     -- column
     id            UUID PRIMARY KEY NOT NULL,

@@ -6,4 +6,4 @@ DROP TABLE IF EXISTS wallets;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS carts;
-DROP TABLE IF EXISTS transaction;
+DROP TABLE IF EXISTS transactions;
