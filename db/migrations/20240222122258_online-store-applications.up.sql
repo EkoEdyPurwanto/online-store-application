@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users
     password      VARCHAR(100),
     email         VARCHAR(50) UNIQUE,
     phone_number  VARCHAR(15) UNIQUE,
-    user_status   users_account_enum NOT NULL DEFAULT 'active',
+    user_status   users_status_enum NOT NULL DEFAULT 'active',
     role          users_role_enum NOT NULL,
     created_at    TIMESTAMPTZ DEFAULT NOW(),
     updated_at    TIMESTAMPTZ
@@ -26,6 +26,15 @@ CREATE TABLE IF NOT EXISTS wallets
     updated_at    TIMESTAMPTZ
     );
 
+CREATE TABLE IF NOT EXISTS categories
+(
+    -- column
+    id            UUID PRIMARY KEY NOT NULL,
+    type          VARCHAR(100) NOT NULL,
+    created_at    TIMESTAMPTZ DEFAULT NOW(),
+    updated_at    TIMESTAMPTZ
+    );
+
 CREATE TABLE IF NOT EXISTS products
 (
     -- column
@@ -35,15 +44,6 @@ CREATE TABLE IF NOT EXISTS products
     price         BIGINT NOT NULL,
     stock         BIGINT NOT NULL,
     category_id   UUID REFERENCES categories (id),
-    created_at    TIMESTAMPTZ DEFAULT NOW(),
-    updated_at    TIMESTAMPTZ
-);
-
-CREATE TABLE IF NOT EXISTS categories
-(
-    -- column
-    id            UUID PRIMARY KEY NOT NULL,
-    type          VARCHAR(100) NOT NULL,
     created_at    TIMESTAMPTZ DEFAULT NOW(),
     updated_at    TIMESTAMPTZ
 );
