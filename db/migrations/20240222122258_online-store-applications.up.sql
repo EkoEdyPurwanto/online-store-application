@@ -1,5 +1,5 @@
 CREATE TYPE users_status_enum AS ENUM ('active', 'inactive', 'blocked', 'other');
-CREATE TYPE users_role_enum AS ENUM ('admin', 'merchant', 'customers');
+CREATE TYPE users_role_enum AS ENUM ('admin', 'merchant', 'customer');
 
 CREATE TABLE IF NOT EXISTS users
 (
