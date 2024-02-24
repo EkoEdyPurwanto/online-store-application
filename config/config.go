@@ -27,7 +27,7 @@ type (
 	TokenConfig struct {
 		ApplicationName  string
 		JwtSignatureKey  []byte
-		JwtSigningMethod *jwt.SigningMethodHMAC
+		JwtSigningMethod jwt.SigningMethodHMAC
 		ExpirationToken  int
 	}
 )

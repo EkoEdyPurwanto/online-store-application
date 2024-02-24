@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"online-store-application/model"
@@ -14,6 +15,7 @@ import (
 type (
 	UsersUseCase interface {
 		Register(payload req.RegisterRequest) error
+		Login(payload req.LoginRequest) (string, error)
 	}
 
 	usersUseCase struct {
@@ -21,6 +23,14 @@ type (
 		walletsUC WalletsUseCase
 	}
 )
+
+// Constructor
+func NewUsersUseCase(repo repository.UsersRepository, walletsUC WalletsUseCase) UsersUseCase {
+	return &usersUseCase{
+		repo:      repo,
+		walletsUC: walletsUC,
+	}
+}
 
 func (u *usersUseCase) Register(payload req.RegisterRequest) error {
 	// Validate the payload
@@ -67,10 +77,49 @@ func (u *usersUseCase) Register(payload req.RegisterRequest) error {
 	return nil
 }
 
-// Constructor
-func NewUsersUseCase(repo repository.UsersRepository, walletsUC WalletsUseCase) UsersUseCase {
-	return &usersUseCase{
-		repo:      repo,
-		walletsUC: walletsUC,
+func (u *usersUseCase) Login(payload req.LoginRequest) (string, error) {
+	// Validate the payload
+	validate := validator.New()
+	err := validate.Struct(payload)
+	if err != nil {
+		return "", err
 	}
+
+	var identifier string
+
+	if payload.Identifier.UserName != "" {
+		identifier = payload.Identifier.UserName
+	} else if payload.Identifier.Email != "" {
+		identifier = payload.Identifier.Email
+	} else if payload.Identifier.PhoneNumber != "" {
+		identifier = payload.Identifier.PhoneNumber
+	}
+
+	if identifier == "" {
+		return "", errors.New("invalid payload")
+	}
+
+	users, err := u.repo.FindUserByIdentifier(identifier)
+	if err != nil {
+		return "", err
+	}
+
+	// Validasi Password
+	err = security.VerifyPassword(users.Password, payload.Password)
+	if err != nil {
+		return "", fmt.Errorf("unauthorized: invalid credential")
+	}
+
+	// Validasi active or not
+	if users.UserStatus != "active" {
+		return "", fmt.Errorf("your account is inactive")
+	}
+
+	// Generate Token
+	token, err := security.GenerateJwtToken(users)
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }

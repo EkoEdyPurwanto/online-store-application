@@ -28,6 +28,7 @@ func (ua *UsersController) AuthRoute() {
 	rg := ua.engine.Group("/api/v1")
 
 	rg.POST("/auth/register", ua.registerHandler)
+	rg.POST("/auth/login", ua.loginHandler)
 }
 
 func (ua *UsersController) registerHandler(c echo.Context) error {
@@ -49,4 +50,30 @@ func (ua *UsersController) registerHandler(c echo.Context) error {
 	}
 
 	return helper.WriteToResponseBody(c, response)
+}
+
+func (ua *UsersController) loginHandler(c echo.Context) error {
+	var payload req.LoginRequest
+	if err := c.Bind(&payload); err != nil {
+		return c.JSON(http.StatusBadRequest, resp.ApiResponse{
+			Status:  http.StatusBadRequest,
+			Message: "Bad Request",
+			Data:    nil,
+		})
+	}
+
+	token, err := ua.usersUC.Login(payload)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, resp.ApiResponse{
+			Status:  http.StatusUnauthorized,
+			Message: "Unauthorized",
+			Data:    err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, resp.ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Successfully login",
+		Data:    token,
+	})
 }
