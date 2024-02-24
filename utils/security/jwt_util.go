@@ -11,10 +11,11 @@ import (
 )
 
 func GenerateJwtToken(user model.Users) (string, error) {
-	_, err := config.NewConfig()
+	cfg, err := config.NewConfig()
 	if err != nil {
 		return "", err
 	}
+	cfg.JwtSigningMethod = jwt.SigningMethodHS256
 
 	now := time.Now()
 	expirationMinutes, err := strconv.Atoi(viper.GetString("APP_EXPIRATION_TOKEN"))
@@ -33,7 +34,7 @@ func GenerateJwtToken(user model.Users) (string, error) {
 	}
 
 	tokenKey := []byte(viper.GetString("APP_TOKEN_KEY"))
-	tokenJwt := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenJwt := jwt.NewWithClaims(cfg.JwtSigningMethod, claims)
 	tokenString, err := tokenJwt.SignedString(tokenKey)
 	if err != nil {
 		return "", fmt.Errorf("failed to create jwt token: %v", err.Error())
@@ -46,13 +47,15 @@ func VerifyJwtToken(tokenString string) (jwt.MapClaims, error) {
 	if err != nil {
 		return nil, err
 	}
+	cfg.JwtSigningMethod = jwt.SigningMethodHS256
 
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 		method, ok := t.Method.(*jwt.SigningMethodHMAC)
-		if !ok || method != &cfg.JwtSigningMethod {
+		if !ok || method != cfg.JwtSigningMethod {
 			return nil, fmt.Errorf("invalid token signin method")
 		}
-		return cfg.JwtSignatureKey, nil
+		tokenKey := []byte(viper.GetString("APP_TOKEN_KEY"))
+		return tokenKey, nil
 	})
 
 	if err != nil {
@@ -60,7 +63,7 @@ func VerifyJwtToken(tokenString string) (jwt.MapClaims, error) {
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok || !token.Valid || claims["iss"] != cfg.ApplicationName {
+	if !ok || !token.Valid || claims["iss"] != viper.GetString("APP_TOKEN_NAME") {
 		return nil, fmt.Errorf("invalid token")
 	}
 	return claims, nil

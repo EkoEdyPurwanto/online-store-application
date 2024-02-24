@@ -33,6 +33,7 @@ func (s *Server) initMiddlewares() {
 
 func (s *Server) initControllers() {
 	controller.NewUsersController(s.ucManager.UsersUC(), s.ucManager.WalletsUC(), s.engine).AuthRoute()
+	controller.NewCategoriesController(s.ucManager.CategoriesUC(), s.engine).CategoriesRoute()
 }
 
 func NewServer() *Server {

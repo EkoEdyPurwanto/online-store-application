@@ -6,9 +6,9 @@ type UseCaseManager interface {
 	UsersUC() usecase.UsersUseCase
 	WalletsUC() usecase.WalletsUseCase
 	ProductsUC() usecase.ProductsUseCase
-	Categories() usecase.WalletsUseCase
-	Carts() usecase.CartsUseCase
-	Transactions() usecase.TransactionsUseCase
+	CategoriesUC() usecase.CategoriesUseCase
+	CartsUC() usecase.CartsUseCase
+	TransactionsUC() usecase.TransactionsUseCase
 }
 
 type useCaseManager struct {
@@ -36,17 +36,16 @@ func (u *useCaseManager) ProductsUC() usecase.ProductsUseCase {
 	panic("implement me")
 }
 
-func (u *useCaseManager) Categories() usecase.WalletsUseCase {
+func (u *useCaseManager) CategoriesUC() usecase.CategoriesUseCase {
+	return usecase.NewCategoriesUseCase(u.repositoryManager.CategoriesRepository())
+}
+
+func (u *useCaseManager) CartsUC() usecase.CartsUseCase {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (u *useCaseManager) Carts() usecase.CartsUseCase {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (u *useCaseManager) Transactions() usecase.TransactionsUseCase {
+func (u *useCaseManager) TransactionsUC() usecase.TransactionsUseCase {
 	//TODO implement me
 	panic("implement me")
 }

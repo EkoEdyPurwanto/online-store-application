@@ -8,36 +8,35 @@ import (
 	"strings"
 )
 
-type authHeader struct {
-	AuthorizationHeader string `header:"Authorization"`
-}
-
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		var authHeader authHeader
-		if err := c.Bind(&authHeader); err != nil {
+		authHeader := c.Request().Header.Get("Authorization")
+		if authHeader == "" {
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
-				"message": fmt.Sprintf("unauthorized %v", err.Error()),
+				"message": "Unauthorized",
 			})
 		}
 
-		// Substring
-		token := strings.Replace(authHeader.AuthorizationHeader, "Bearer ", "", 1)
-		if token == "" {
+		// Check if the Authorization header starts with "Bearer"
+		if !strings.HasPrefix(authHeader, "Bearer ") {
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
-				"message": "unauthorized",
+				"message": "Invalid token format",
 			})
 		}
 
-		// Verifikasi Token
+		// Extract token from Authorization header
+		token := strings.TrimPrefix(authHeader, "Bearer ")
+
+		// Verify Token
 		claims, err := security.VerifyJwtToken(token)
 		if err != nil {
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
-				"message": fmt.Sprintf("unauthorized %v", err.Error()),
+				"message": fmt.Sprintf("Unauthorized: %v", err.Error()),
 			})
 		}
+
+		// Set claims in the context for later use
 		c.Set("claims", claims)
 		return next(c)
 	}
 }
-
