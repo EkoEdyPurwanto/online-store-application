@@ -28,3 +28,6 @@ logger.log
 
 # env
 app.env
+
+# temporary
+tmp
