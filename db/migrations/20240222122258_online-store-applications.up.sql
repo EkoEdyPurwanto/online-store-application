@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS products
     category_id   UUID REFERENCES categories (id),
     created_at    TIMESTAMPTZ DEFAULT NOW(),
     updated_at    TIMESTAMPTZ
-);
+    );
 
 CREATE TABLE IF NOT EXISTS carts
 (
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS carts
     quantity      BIGINT NOT NULL,
     created_at    TIMESTAMPTZ DEFAULT NOW(),
     updated_at    TIMESTAMPTZ
-);
+    );
 
 CREATE TABLE IF NOT EXISTS transactions
 (
@@ -68,4 +68,4 @@ CREATE TABLE IF NOT EXISTS transactions
     quantity      BIGINT NOT NULL,
     total_price   BIGINT NOT NULL,
     date          DATE
-);
+    );
