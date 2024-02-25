@@ -12,14 +12,14 @@ import (
 
 type ProductsController struct {
 	productsUC usecase.ProductsUseCase
-	engine       *echo.Echo
+	engine     *echo.Echo
 }
 
 // Constructor
 func NewProductsController(productsUC usecase.ProductsUseCase, engine *echo.Echo) *ProductsController {
 	return &ProductsController{
-		productsUC:productsUC,
-		engine:       engine,
+		productsUC: productsUC,
+		engine:     engine,
 	}
 }
 
@@ -27,6 +27,7 @@ func (p *ProductsController) ProductsRoute() {
 	rg := p.engine.Group("/api/v1", middleware.AuthMiddleware)
 
 	rg.POST("/products", p.createProductsHandler)
+	rg.GET("/products/:categoryType", p.getProductsByTypeHandler)
 }
 
 func (p *ProductsController) createProductsHandler(ctx echo.Context) error {
@@ -45,6 +46,23 @@ func (p *ProductsController) createProductsHandler(ctx echo.Context) error {
 		Status:  http.StatusCreated,
 		Message: "successfully create product",
 		Data:    nil,
+	}
+
+	return helper.WriteToResponseBody(ctx, response)
+}
+
+func (p *ProductsController) getProductsByTypeHandler(ctx echo.Context) error {
+	categoryType := ctx.Param("categoryType")
+
+	products, err := p.productsUC.GetProductsByType(categoryType)
+	if err != nil {
+		return err
+	}
+
+	response := resp.ApiResponse{
+		Status:  http.StatusOK,
+		Message: "Successfully retrieved products by type",
+		Data:    products,
 	}
 
 	return helper.WriteToResponseBody(ctx, response)

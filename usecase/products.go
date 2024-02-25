@@ -13,17 +13,18 @@ import (
 type (
 	ProductsUseCase interface {
 		CreateProducts(payload req.CreateProductsRequest) error
+		GetProductsByType(payload string) ([]model.Products, error)
 	}
 
 	productsUseCase struct {
-		repo    repository.ProductsRepository
+		repo repository.ProductsRepository
 	}
 )
 
 // Constructor
 func NewProductsUseCase(repo repository.ProductsRepository) ProductsUseCase {
 	return &productsUseCase{
-		repo:    repo,
+		repo: repo,
 	}
 }
 
@@ -51,4 +52,13 @@ func (p *productsUseCase) CreateProducts(payload req.CreateProductsRequest) erro
 	}
 
 	return nil
+}
+
+func (p *productsUseCase) GetProductsByType(payload string) ([]model.Products, error) {
+	getProductBytype, err := p.repo.FindByType(payload)
+	if err != nil {
+		return []model.Products{}, err
+	}
+
+	return getProductBytype, nil
 }
