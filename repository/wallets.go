@@ -24,12 +24,12 @@ func NewWalletsRepository(db *sql.DB) WalletsRepository {
 func (w *walletsRepository) Save(wallets model.Wallets) error {
 	SQL := `INSERT INTO wallets(id, user_id, rekening_user, balance, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) `
 	_, err := w.db.Exec(SQL,
-		wallets.Id,
-		wallets.UserId,
-		wallets.RekeningUser,
-		wallets.Balance,
-		wallets.CreatedAt,
-		wallets.UpdatedAt,
+		&wallets.Id,
+		&wallets.UserId,
+		&wallets.RekeningUser,
+		&wallets.Balance,
+		&wallets.CreatedAt,
+		&wallets.UpdatedAt,
 	)
 
 	if err != nil {
