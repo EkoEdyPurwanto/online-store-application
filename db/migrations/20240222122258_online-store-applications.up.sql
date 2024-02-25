@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS carts
     product_id    UUID REFERENCES products (id),
     quantity      BIGINT NOT NULL,
     created_at    TIMESTAMPTZ DEFAULT NOW(),
-    updated_at    TIMESTAMPTZ
+    updated_at    TIMESTAMPTZ,
+    deleted_at    TIMESTAMPTZ
     );
 
 CREATE TABLE IF NOT EXISTS transactions

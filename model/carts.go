@@ -10,4 +10,5 @@ type Carts struct {
 	UserId uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	DeletedAt time.Time
 }
