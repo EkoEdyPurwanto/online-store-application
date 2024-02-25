@@ -3,7 +3,7 @@ package req
 import "online-store-application/model"
 
 type RegisterRequest struct {
-	Role            model.Role         `json:"role"`
+	Role            model.Role         `json:"role" validate:"required,oneof=admin merchant customer"`
 	Identifier      registerIdentifier `json:"identifier"`
 	UserName        string             `json:"username" validate:"required,min=3,max=30"`
 	Password        string             `json:"password" validate:"required"`

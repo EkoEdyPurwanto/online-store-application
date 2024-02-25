@@ -18,24 +18,7 @@ type Server struct {
 	log       *logrus.Logger
 }
 
-func (s *Server) Run() {
-	s.initMiddlewares()
-	s.initControllers()
-	err := s.engine.Start(s.host)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func (s *Server) initMiddlewares() {
-	s.engine.Use(middleware.LogRequest(s.log))
-}
-
-func (s *Server) initControllers() {
-	controller.NewUsersController(s.ucManager.UsersUC(), s.ucManager.WalletsUC(), s.engine).AuthRoute()
-	controller.NewCategoriesController(s.ucManager.CategoriesUC(), s.engine).CategoriesRoute()
-}
-
+// Constructor
 func NewServer() *Server {
 	cfg, err := config.NewConfig()
 	if err != nil {
@@ -62,4 +45,22 @@ func NewServer() *Server {
 		host:      hostAndPort,
 		log:       log,
 	}
+}
+
+func (s *Server) Run() {
+	s.initMiddlewares()
+	s.initControllers()
+	err := s.engine.Start(s.host)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (s *Server) initMiddlewares() {
+	s.engine.Use(middleware.LogRequest(s.log))
+}
+
+func (s *Server) initControllers() {
+	controller.NewUsersController(s.ucManager.UsersUC(), s.ucManager.WalletsUC(), s.engine).AuthRoute()
+	controller.NewCategoriesController(s.ucManager.CategoriesUC(), s.engine).CategoriesRoute()
 }

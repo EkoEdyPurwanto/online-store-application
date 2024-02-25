@@ -23,6 +23,26 @@ func NewUsersRepository(db *sql.DB) UsersRepository {
 	}
 }
 
+func (u *usersRepository) Save(users model.Users) error {
+	SQL := `INSERT INTO users(id, username, password, email, phone_number, user_status, role, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	_, err := u.db.Exec(SQL,
+		users.Id,
+		users.Username,
+		users.Password,
+		users.Email,
+		users.PhoneNumber,
+		users.UserStatus,
+		users.Role,
+		users.CreatedAt,
+		users.UpdatedAt,
+	)
+
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (u *usersRepository) FindUserByIdentifier(identifier string) (model.Users, error) {
 	SQL := `SELECT * FROM users WHERE (username = $1 OR email = $2 OR phone_number = $3)`
 	row := u.db.QueryRow(SQL, identifier, identifier, identifier)
@@ -43,24 +63,4 @@ func (u *usersRepository) FindUserByIdentifier(identifier string) (model.Users, 
 		return model.Users{}, err
 	}
 	return users, nil
-}
-
-func (u *usersRepository) Save(users model.Users) error {
-	SQL := `INSERT INTO users(id, username, password, email, phone_number, user_status, role, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)`
-	_, err := u.db.Exec(SQL,
-		users.Id,
-		users.Username,
-		users.Password,
-		users.Email,
-		users.PhoneNumber,
-		users.UserStatus,
-		users.Role,
-		users.CreatedAt,
-		users.UpdatedAt,
-	)
-
-	if err != nil {
-		return err
-	}
-	return nil
 }

@@ -37,7 +37,7 @@ func (u *usersUseCase) Register(payload req.RegisterRequest) error {
 	validate := validator.New()
 	err := validate.Struct(payload)
 	if err != nil {
-		return err
+		return fmt.Errorf("bad request: %v", err.Error())
 	}
 
 	hashPassword, err := security.HashPassword(payload.Password)

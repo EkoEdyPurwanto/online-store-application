@@ -20,12 +20,19 @@ type (
 	}
 )
 
+// Constructor
+func NewCategoriesUseCase(repo repository.CategoriesRepository) CategoriesUseCase {
+	return &categoriesUseCase{
+		repo: repo,
+	}
+}
+
 func (c *categoriesUseCase) CreateCategories(payload req.CreateCategoriesRequest) error {
 	// Validate the payload
 	validate := validator.New()
 	err := validate.Struct(payload)
 	if err != nil {
-		return err
+		return fmt.Errorf("bad request: %v", err.Error())
 	}
 	//
 	//var users model.Users
@@ -45,10 +52,4 @@ func (c *categoriesUseCase) CreateCategories(payload req.CreateCategoriesRequest
 	}
 
 	return nil
-}
-
-func NewCategoriesUseCase(repo repository.CategoriesRepository) CategoriesUseCase {
-	return &categoriesUseCase{
-		repo: repo,
-	}
 }
