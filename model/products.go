@@ -14,4 +14,5 @@ type Products struct {
 	CategoryId  uuid.UUID
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+	DeletedAt   time.Time
 }

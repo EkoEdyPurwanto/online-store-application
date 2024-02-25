@@ -46,7 +46,8 @@ CREATE TABLE IF NOT EXISTS products
     stock         BIGINT NOT NULL,
     category_id   UUID REFERENCES categories (id),
     created_at    TIMESTAMPTZ DEFAULT NOW(),
-    updated_at    TIMESTAMPTZ
+    updated_at    TIMESTAMPTZ,
+    deleted_at    TIMESTAMPTZ
     );
 
 CREATE TABLE IF NOT EXISTS carts

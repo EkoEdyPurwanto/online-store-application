@@ -9,6 +9,7 @@ type (
 	UsersRepository interface {
 		Save(users model.Users) error
 		FindUserByIdentifier(identifier string) (model.Users, error)
+		FindById(id string) (model.Users, error)
 	}
 
 	usersRepository struct {
@@ -46,6 +47,28 @@ func (u *usersRepository) Save(users model.Users) error {
 func (u *usersRepository) FindUserByIdentifier(identifier string) (model.Users, error) {
 	SQL := `SELECT * FROM users WHERE (username = $1 OR email = $2 OR phone_number = $3)`
 	row := u.db.QueryRow(SQL, identifier, identifier, identifier)
+	var users model.Users
+	err := row.Scan(
+		&users.Id,
+		&users.Username,
+		&users.Password,
+		&users.Email,
+		&users.PhoneNumber,
+		&users.UserStatus,
+		&users.Role,
+		&users.CreatedAt,
+		&users.UpdatedAt,
+	)
+
+	if err != nil {
+		return model.Users{}, err
+	}
+	return users, nil
+}
+
+func (u *usersRepository) FindById(id string) (model.Users, error) {
+	SQL := `SELECT * FROM users WHERE (id = $1)`
+	row := u.db.QueryRow(SQL, id)
 	var users model.Users
 	err := row.Scan(
 		&users.Id,

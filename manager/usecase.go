@@ -32,8 +32,7 @@ func (u *useCaseManager) WalletsUC() usecase.WalletsUseCase {
 }
 
 func (u *useCaseManager) ProductsUC() usecase.ProductsUseCase {
-	//TODO implement me
-	panic("implement me")
+	return usecase.NewProductsUseCase(u.repositoryManager.ProductsRepository())
 }
 
 func (u *useCaseManager) CategoriesUC() usecase.CategoriesUseCase {

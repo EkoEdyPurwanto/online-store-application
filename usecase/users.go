@@ -16,6 +16,7 @@ type (
 	UsersUseCase interface {
 		Register(payload req.RegisterRequest) error
 		Login(payload req.LoginRequest) (string, error)
+		GetById(payload string) (model.Users, error)
 	}
 
 	usersUseCase struct {
@@ -122,4 +123,12 @@ func (u *usersUseCase) Login(payload req.LoginRequest) (string, error) {
 	}
 
 	return token, nil
+}
+
+func (u *usersUseCase) GetById(payload string) (model.Users, error) {
+	byId, err := u.repo.FindById(payload)
+	if err != nil {
+		return model.Users{}, fmt.Errorf("user not found")
+	}
+	return byId, nil
 }
