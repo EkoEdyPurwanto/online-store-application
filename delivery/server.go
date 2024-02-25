@@ -64,4 +64,5 @@ func (s *Server) initControllers() {
 	controller.NewUsersController(s.ucManager.UsersUC(), s.ucManager.WalletsUC(), s.engine).AuthRoute()
 	controller.NewCategoriesController(s.ucManager.CategoriesUC(), s.engine).CategoriesRoute()
 	controller.NewProductsController(s.ucManager.ProductsUC(), s.engine).ProductsRoute()
+	controller.NewCartsController(s.ucManager.CartsUC(), s.engine).CartsRoute()
 }

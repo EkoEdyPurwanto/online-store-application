@@ -40,8 +40,7 @@ func (u *useCaseManager) CategoriesUC() usecase.CategoriesUseCase {
 }
 
 func (u *useCaseManager) CartsUC() usecase.CartsUseCase {
-	//TODO implement me
-	panic("implement me")
+	return usecase.NewCartsUseCase(u.repositoryManager.CartsRepository())
 }
 
 func (u *useCaseManager) TransactionsUC() usecase.TransactionsUseCase {
